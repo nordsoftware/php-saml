@@ -66,22 +66,31 @@ class OneLogin_Saml2_LogoutRequest
                 $cert = $idpData['x509cert'];
             }
 
+            $spNameQualifier = null;
             if (!empty($nameId)) {
                 if (empty($nameIdFormat)) {
                     $nameIdFormat = $spData['NameIDFormat'];
                 }
-                $spNameQualifier = null;
+                if (isset($spData['enforceSPNameQualifier']) && $spData['enforceSPNameQualifier']) {
+                    $spNameQualifier = $spData['entityId'];
+                }
             } else {
                 $nameId = $idpData['entityId'];
                 $nameIdFormat = OneLogin_Saml2_Constants::NAMEID_ENTITY;
                 $spNameQualifier = $spData['entityId'];
             }
 
+            $nameQualifier = null;
+            if (isset($spData['enforceNameQualifier']) && $spData['enforceNameQualifier']) {
+                $nameQualifier = $idpData['entityId'];
+            }
+
             $nameIdObj = OneLogin_Saml2_Utils::generateNameId(
                 $nameId,
                 $spNameQualifier,
                 $nameIdFormat,
-                $cert
+                $cert,
+                $nameQualifier
             );
 
             $sessionIndexStr = isset($sessionIndex) ? "<samlp:SessionIndex>{$sessionIndex}</samlp:SessionIndex>" : "";

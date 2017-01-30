@@ -619,9 +619,24 @@ class OneLogin_Saml2_Response
     }
 
     /**
+     * Gets the InResponseTo value.
+     *
+     * @return null|string
+     */
+    public function getInResponseTo()
+    {
+        if ($this->document->documentElement->hasAttribute('InResponseTo')) {
+            return $this->document->documentElement->getAttribute('InResponseTo');
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the Attributes from the AttributeStatement element.
-     * 
+     *
      * @return array The attributes of the SAML Assertion
+     * @throws OneLogin_Saml2_ValidationError
      */
     public function getAttributes()
     {

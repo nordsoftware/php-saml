@@ -76,6 +76,20 @@ class OneLogin_Saml2_LogoutResponse
     }
 
     /**
+     * Gets the InResponseTo attribute value.
+     *
+     * @return null|string
+     */
+    public function getInResponseTo()
+    {
+        if ($this->document->documentElement->hasAttribute('InResponseTo')) {
+            return $this->document->documentElement->getAttribute('InResponseTo');
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the Status of the Logout Response.
      *
      * @return string The Status

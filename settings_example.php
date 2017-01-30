@@ -65,6 +65,10 @@ $settings = array (
         // the certs folder. But we can also provide them with the following parameters
         'x509cert' => '',
         'privateKey' => '',
+        // Whether to add the SPNameQualifier value in the LogoutRequest even if only nameId is given.
+        'enforceSPNameQualifier' => false,
+        // Whether to add the NameQualifier value in the LogoutRequest.
+        'enforceNameQualifier' => false,
     ),
 
     // Identity Provider Data that we want connect with our SP

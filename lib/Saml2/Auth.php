@@ -98,6 +98,13 @@ class OneLogin_Saml2_Auth
     private $_lastResponse;
 
     /**
+     * The InResponseTo value from the XML.
+     *
+     * @var string|null
+     */
+    private $_responseId;
+
+    /**
      * Initializes the SP SAML instance.
      *
      * @param array|object|null $oldSettings Setting data (You can provide a OneLogin_Saml_Settings, the settings object of the Saml folder implementation)
@@ -121,8 +128,8 @@ class OneLogin_Saml2_Auth
      * Set the strict mode active/disable
      *
      * @param bool $value Strict parameter
-     *
      * @return array The settings data.
+     * @throws OneLogin_Saml2_Error
      */
     public function setStrict($value)
     {
@@ -158,6 +165,7 @@ class OneLogin_Saml2_Auth
                 $this->_authenticated = true;
                 $this->_sessionIndex = $response->getSessionIndex();
                 $this->_sessionExpiration = $response->getSessionNotOnOrAfter();
+                $this->_responseId = $response->getInResponseTo();
             } else {
                 $this->_errors[] = 'invalid_response';
                 $this->_errorReason = $response->getError();
@@ -200,7 +208,7 @@ class OneLogin_Saml2_Auth
                     if ($cbDeleteSession === null) {
                         OneLogin_Saml2_Utils::deleteLocalSession();
                     } else {
-                        call_user_func($cbDeleteSession);
+                        call_user_func($cbDeleteSession, $this, $logoutResponse);
                     }
                 }
             }
@@ -493,6 +501,16 @@ class OneLogin_Saml2_Auth
     public function getLastRequestID()
     {
         return $this->_lastRequestID;
+    }
+
+    /**
+     * Gets the InResponseTo value.
+     *
+     * @return string|null
+     */
+    public function getResponseId()
+    {
+        return $this->_responseId;
     }
 
     /**

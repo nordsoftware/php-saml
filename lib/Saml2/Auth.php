@@ -223,7 +223,7 @@ class OneLogin_Saml2_Auth
                     if ($cbDeleteSession === null) {
                         OneLogin_Saml2_Utils::deleteLocalSession();
                     } else {
-                        call_user_func($cbDeleteSession);
+                        call_user_func($cbDeleteSession, $this, $logoutRequest);
                     }
                 }
                 $inResponseTo = $logoutRequest->id;
